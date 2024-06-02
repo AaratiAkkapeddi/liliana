@@ -403,10 +403,10 @@ function draw() {
 
 
         if(random([true,false])){
-          pixels.push(new Pixel(x+gridSize/2 + random(-5,5), y+gridSize/2 + random(-5,5), shades[nr], 1, r))
+          pixels.push(new Pixel(x+gridSize/2 + random(-5,5), y+gridSize/2 + random((-1 * (gridSize)),(gridSize)), shades[nr], 1, r))
 
         }else{
-          pixels.push(new Pixel(x+gridSize/2 + random(-2,2), y+gridSize/2 + random(-2,2), shades[nr], sr,r))
+          pixels.push(new Pixel(x+gridSize/2 + random(-2,2), y+gridSize/2 + random((-1 * (gridSize*2)),(gridSize*2)), shades[nr], sr,r))
 
         }
 
@@ -505,10 +505,10 @@ function updateSize(){
 
 
       if(random([true,false])){
-        pixels.push(new Pixel(x+gridSize/2 + random(-5,5), y+gridSize/2 + random(-5,5), shades[nr], 1, r))
+        pixels.push(new Pixel(x+gridSize/2 + random(-5,5), y+gridSize/2 + random((-1 * (gridSize)),(gridSize)), shades[nr], 1, r))
 
       }else{
-        pixels.push(new Pixel(x+gridSize/2 + random(-2,2), y+gridSize/2 + random(-2,2), shades[nr], sr,r))
+        pixels.push(new Pixel(x+gridSize/2 + random(-2,2), y+gridSize/2 + random((-1 * (gridSize*2)),(gridSize*2)), shades[nr], sr,r))
 
       }
 
