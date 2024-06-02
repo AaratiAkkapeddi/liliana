@@ -119,6 +119,7 @@ let line_horizontal_imgs = [];
 let line_vertical_imgs = [];
 let star_imgs = [];
 let diagonal_imgs = [];
+let none_imgs = [];
 
 function preload(){
   
@@ -137,6 +138,9 @@ function preload(){
   
   for(let i = 0; i < diagonal.length; i++){
     diagonal_imgs.push(loadImage(diagonal[i]))
+  }
+  for(let i = 0; i < star.length; i++){
+    star_imgs.push(loadImage(star[i]))
   }
   
 }
@@ -203,91 +207,91 @@ function setup() {
   let span2 = createSpan('Shade 0 (darkest)');
   span2.position(10, 80);
   sliderSymbolSize0 = createSlider(5, 100, 28, 1);
-  sliderSymbolSize0.position(10, 130);
+  sliderSymbolSize0.position(window.innerWidth-270, 200);
   sliderSymbolSize0.size(200);
-  let span = createSpan('symbol size for shade 0 (currently 28)');
-  span.position(10, 150);
+  let span = createSpan('symbol size for Arrow (currently 28)');
+  span.position(window.innerWidth-270, 230);
   sliderSymbolSize0.input(function(){
-    span.html("symbol size for shade 0 (currently "+sliderSymbolSize0.value() +")")
+    span.html("symbol size for Arrow (currently "+sliderSymbolSize0.value() +")")
   });
 
 
   shade1 = createSelect();
-  shade1.position(10, 220);
+  shade1.position(10, 180);
   
   let span3 = createSpan('Shade 1');
-  span3.position(10, 200);
+  span3.position(10, 150);
   sliderSymbolSize1 = createSlider(5, 100, 20, 1);
-  sliderSymbolSize1.position(10, 250);
+  sliderSymbolSize1.position(window.innerWidth-270, 280);
   sliderSymbolSize1.size(200);
 
-  let span9 = createSpan('symbol size for shade 1 (currently 20)');
-  span9.position(10, 270);
+  let span9 = createSpan('symbol size for circle (currently 20)');
+  span9.position(window.innerWidth-270, 300);
   sliderSymbolSize1.input(function(){
-    span9.html("symbol size for shade 1 (currently "+sliderSymbolSize1.value() +")")
+    span9.html("symbol size for circle (currently "+sliderSymbolSize1.value() +")")
   });
 
   shade2 = createSelect();
-  shade2.position(10, 350);
+  shade2.position(10, 250);
 
   let span4 = createSpan('Shade 2');
-  span4.position(10, 320);
+  span4.position(10, 230);
 
   sliderSymbolSize2 = createSlider(5, 100, 100, 1);
-  sliderSymbolSize2.position(10, 380);
+  sliderSymbolSize2.position(window.innerWidth-270, 350);
   sliderSymbolSize2.size(200);
 
-  let span10 = createSpan('symbol size for shade 2 (currently 100)');
-  span10.position(10, 400);
+  let span10 = createSpan('symbol size for Diagonal (currently 100)');
+  span10.position(window.innerWidth-270, 370);
   sliderSymbolSize2.input(function(){
-    span10.html("symbol size for shade 2 (currently "+sliderSymbolSize2.value() +")")
+    span10.html("symbol size for shade Diagonal (currently "+sliderSymbolSize2.value() +")")
   });
 
   shade3 = createSelect();
-  shade3.position(10, 470);
+  shade3.position(10, 330);
 
   let span5 = createSpan('Shade 3');
-  span5.position(10, 450);
+  span5.position(10, 300);
 
   sliderSymbolSize3 = createSlider(5, 100, 20, 1);
-  sliderSymbolSize3.position(10, 500);
+  sliderSymbolSize3.position(window.innerWidth-270, 420);
   sliderSymbolSize3.size(200);
 
-  let span11 = createSpan('symbol size for shade 3 (currently 20)');
-  span11.position(10, 520);
+  let span11 = createSpan('symbol size for Horizontal (currently 20)');
+  span11.position(window.innerWidth-270, 450);
   sliderSymbolSize3.input(function(){
-    span11.html("symbol size for shade 3 (currently "+sliderSymbolSize3.value() +")")
+    span11.html("symbol size for Horizontal (currently "+sliderSymbolSize3.value() +")")
   });
 
   shade4 = createSelect();
-  shade4.position(10, 590);
+  shade4.position(10, 400);
   
   let span6 = createSpan('Shade 4');
-  span6.position(10, 570);
+  span6.position(10, 380);
 
   sliderSymbolSize4 = createSlider(5, 100, 20, 1);
-  sliderSymbolSize4.position(10, 620);
+  sliderSymbolSize4.position(window.innerWidth-270, 480);
   sliderSymbolSize4.size(200);
 
-  let span12 = createSpan('symbol size for shade 4 (currently 20)');
-  span12.position(10, 640);
+  let span12 = createSpan('symbol size for Vertical (currently 20)');
+  span12.position(window.innerWidth-270, 500);
   sliderSymbolSize4.input(function(){
-    span12.html("symbol size for shade 4 (currently "+sliderSymbolSize4.value() +")")
+    span12.html("symbol size for Vertical (currently "+sliderSymbolSize4.value() +")")
   });
 
 
   shade5 = createSelect();
-  shade5.position(10, 710);
+  shade5.position(10, 470);
   let span7 = createSpan('Shade 5 (lightest)');
-  span7.position(10, 690);
+  span7.position(10, 440);
   sliderSymbolSize5 = createSlider(5, 100, 20, 1);
-  sliderSymbolSize5.position(10, 740);
+  sliderSymbolSize5.position(window.innerWidth-270, 530);
   sliderSymbolSize5.size(200);
 
-  let span13 = createSpan('symbol size for shade 5 (currently 20)');
-  span13.position(10, 760);
+  let span13 = createSpan('symbol size for Star (currently 20)');
+  span13.position(window.innerWidth-270, 550);
   sliderSymbolSize5.input(function(){
-    span13.html("symbol size for shade 5 (currently "+sliderSymbolSize5.value() +")")
+    span13.html("symbol size for Star (currently "+sliderSymbolSize5.value() +")")
   });
 
   sliderResolution = createSlider(5, 30, 10, 1);
@@ -307,9 +311,10 @@ function setup() {
   shade0.option('line vertical');
   shade0.option('diagonal');
   shade0.option('star');
+  shade0.option('none');
 
   // Set the selected option to "red".
-  shade0.selected('arrow');
+  shade0.selected('none');
 
   // Add color options.
   shade1.option('arrow');
@@ -318,6 +323,7 @@ function setup() {
   shade1.option('line vertical');
   shade1.option('diagonal');
   shade1.option('star');
+  shade1.option('none');
 
   // Set the selected option to "red".
   shade1.selected('circle');
@@ -329,6 +335,7 @@ function setup() {
   shade2.option('line vertical');
   shade2.option('diagonal');
   shade2.option('star');
+  shade2.option('none');
 
   // Set the selected option to "red".
   shade2.selected('diagonal');
@@ -342,6 +349,7 @@ function setup() {
   shade3.option('line vertical');
   shade3.option('diagonal');
   shade3.option('star');
+  shade3.option('none');
 
   // Set the selected option to "red".
   shade3.selected('line horizontal');
@@ -353,6 +361,7 @@ function setup() {
   shade4.option('line vertical');
   shade4.option('diagonal');
   shade4.option('star');
+  shade4.option('none');
 
   // Set the selected option to "red".
   shade4.selected('line vertical');
@@ -365,6 +374,7 @@ function setup() {
   shade5.option('line vertical');
   shade5.option('diagonal');
   shade5.option('star');
+  shade5.option('none');
 
   // Set the selected option to "red".
   shade5.selected('star');
@@ -548,6 +558,9 @@ class Pixel {
       case 'star':
         nc = star_imgs
         break
+      case 'none':
+        nc = none_imgs
+        break
     }
     this.cmap  = int(map(this.color, 200, 255, 0, nc.length - 1));
     if(random[true,true]){
@@ -576,6 +589,8 @@ class Pixel {
         break
       case 'star':
         this.r = sliderSymbolSize5.value()
+        break
+      case 'none':
         break
     }
     push()
@@ -617,6 +632,9 @@ class Pixel {
         case 'star':
           nc = star_imgs
           this.r = sliderSymbolSize5.value()
+          break
+        case 'none':
+          nc = none_imgs
           break
       }
       this.color = color;
@@ -660,6 +678,9 @@ class Noise {
         break
       case 'star':
         nc = star_imgs
+        break
+      case 'none':
+        nc = none_imgs
         break
     }
 
