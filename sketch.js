@@ -1,4 +1,5 @@
 
+
 let playing = false;
 let video;
 let gridSize = 10; //resolution of grid
@@ -17,6 +18,7 @@ let sliderSymbolSize2;
 let sliderSymbolSize3;
 let sliderSymbolSize4;
 let sliderSymbolSize5;
+let sliderFR;
 
 let shade0;
 let shade1;
@@ -155,7 +157,7 @@ let shades = ["arrow","circle","diagonal","line horizontal","line vertical","sta
 let pixels = [];
 let indexes = [];
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(800, 450);
   video = createVideo("trimmed.mp4");//to change the video you replace the filename here
   // webcam capture (at the size of the window)
   video.size(width, height);
@@ -166,7 +168,7 @@ function setup() {
   ry = random(height)
   ri = imgs[floor(random(0,67))];
   // video.hide();
-  frameRate(15);
+  frameRate(20);
   flow = new FlowCalculator(velocityGridSize);
   noises.push(new Noise(random(width), random(height), random(shades), random(50,200)));
   noises.push(new Noise(random(width), random(height), random(shades), random(50,200)));
@@ -367,6 +369,21 @@ function setup() {
   shade4.selected('line vertical');
 
 
+  sliderFR = createSlider(5, 30, 10, 1);
+  sliderFR.position(10, 650);
+  sliderFR.size(200);
+  sliderFR.input(updateSize);
+
+  let span14 = createSpan('frameRate: 20');
+  span14.position(10, 600);
+  sliderFR.input(function(){
+    span14.html("frameRate: "+sliderFR.value() +")")
+    frameRate(sliderFR.value())
+  });
+
+ 
+ 
+
   // Add color options.
   shade5.option('arrow');
   shade5.option('circle');
@@ -378,6 +395,9 @@ function setup() {
 
   // Set the selected option to "red".
   shade5.selected('star');
+
+
+
 
 }
 
@@ -594,7 +614,7 @@ class Pixel {
         break
     }
     push()
-    translate(this.x,this.y)
+    translate(this.x + random(-1,1),this.y + random(-1,1))
     rotate(this.angle)
     if(this.i){
       image(this.i,0, 0, this.r,this.r)
