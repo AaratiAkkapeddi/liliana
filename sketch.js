@@ -6,16 +6,17 @@ let playing = false;
 let video;
 let gridSize = 10; //resolution of grid (how many video input pixels per output pixel)
 
-let velocityGridSize = 24;
-let flow; // Calculated flow for entire image //motion
+let velocityGridSize = 24; //(grid size for calculating velocity in flow.js)
+
+let flow; // Calculated flow for entire image //motion (uses flow.js)
 
 let previousPixels; // Copy of previous frame
 
-let ignoreThresh = 16; // Ignore movements below this level
+let ignoreThresh = 16; // Ignore movements below this level (for optical flow)
 
 let sr = 20; //symbol size (symbol radius)
 
-/*CONTROLS */
+/* Variables for CONTROLS elements */
 let sliderResolution;
 let sliderSymbolSize0;
 let sliderSymbolSize1;
@@ -165,7 +166,7 @@ function preload() {
 /*************************/
 /*************************/
 /*************************/
-let shades = [
+let shades = [ //(symbol type options for each shade)
   "arrow",
   "circle",
   "diagonal",
@@ -203,7 +204,7 @@ function setup() {
     new Noise(random(width), random(height), random(shades), random(50, 200)) //change noise symbol size here
   );
 
-  /* CONTROLS */
+  /* Setting up CONTROLS */
   let addNoise = createButton("add noise");
   addNoise.position(window.innerWidth - 100, 100);
 
@@ -240,7 +241,7 @@ function setup() {
     );
   });
 
-    /* select symbol type for second darkest shade */
+  /* select symbol type for second darkest shade */
   shade1 = createSelect();
   shade1.position(10, 180);
 
@@ -452,17 +453,17 @@ function draw() {
 
   video.loadPixels();
 
-  if (frameCount == 2) { //this is to avoid a flow calculation error on start
-    for (let y = 0; y < video.height; y += gridSize) {
-      for (let x = 0; x < video.width; x += gridSize) {
-        let index = (y * video.width + x) * 4;
+  if (frameCount == 2) { //this if/else statement is to avoid a flow calculation error on start (basically don't calculate flow until after frame 2)
+    for (let y = 0; y < video.height; y += gridSize) { //iterating through height of video (skipping over gridSize number of pixels each loop)
+      for (let x = 0; x < video.width; x += gridSize) { //iterating through width of video (skipping over gridSize number of pixels each loop)
+        let index = (y * video.width + x) * 4; //this formula is very particular to p5.js --> explanation here: https://www.youtube.com/watch?v=nMUMZ5YRxHI
         indexes.push(index);
-        let r = video.pixels[index]; //the grayscale value of the tile
+        let r = video.pixels[index]; //the grayscale value of the tile/pixel
 
-        let nr = int(map(r, 0, 255, 0, 5));
+        let nr = int(map(r, 0, 255, 0, 5)); //grayscale value of tile/pixel mapped to a number between 0 and 5
 
 
-          pixels.push(
+          pixels.push( //create a new pixel (symbol) based on grayscale value
             new Pixel(
               x + gridSize / 2 + random(-5, 5),
               y + gridSize / 2 + random(-1 * gridSize, gridSize),
@@ -477,13 +478,13 @@ function draw() {
   } else if (frameCount > 2) {
     indexes.forEach((index, i) => {
       let r = video.pixels[index]; //the grayscale value of the tile
-      let nr = int(map(r, 0, 255, 0, 5));
-      pixels[i].update(shades[nr], r);
-      pixels[i].draw();
+      let nr = int(map(r, 0, 255, 0, 5)); //grayscale value of tile/pixel mapped to a number between 0 and 5
+      pixels[i].update(shades[nr], r); //(update in case any of the shade settings are changed)
+      pixels[i].draw(); //draw pixel
     });
   }
 
-  noises.forEach((noise) => noise.draw());
+  noises.forEach((noise) => noise.draw()); //draw any random "noises" added
 
   if (video.pixels.length > 0) {
     // Calculate flow (but skip if the current and previous frames are the same)
@@ -494,7 +495,6 @@ function draw() {
       flow.calculate(previousPixels, video.pixels, video.width, video.height);
     }
 
-    // Display the video
     // Ff flow zones have been found, display them for us!
     if (flow.zones) {
       for (let zone of flow.zones) {
@@ -509,7 +509,7 @@ function draw() {
             pixel.angle = zone.angle;
           }
         });
-        // Otherwise, rotate symbols towards direction of flow!
+        // Otherwise, rotate symbols towards direction of flow
         push();
         translate(zone.pos.x, zone.pos.y);
         rotate(zone.angle);
@@ -524,7 +524,7 @@ function draw() {
   }
 }
 
-function updateSize() {
+function updateSize() { //update sizes of symbols based on user input from the form elements
   video.loadPixels();
   pixels = [];
   indexes = [];
