@@ -13,7 +13,7 @@ let previousPixels; // Copy of previous frame
 
 let ignoreThresh = 16; // Ignore movements below this level
 
-let sr = 20; //symbol size
+let sr = 20; //symbol size (symbol radius)
 
 /*CONTROLS */
 let sliderResolution;
@@ -194,13 +194,13 @@ function setup() {
   frameRate(20);
   flow = new FlowCalculator(velocityGridSize);
   noises.push(
-    new Noise(random(width), random(height), random(shades), random(50, 200))
+    new Noise(random(width), random(height), random(shades), random(50, 200)) //change noise symbol size here
   );
   noises.push(
-    new Noise(random(width), random(height), random(shades), random(50, 200))
+    new Noise(random(width), random(height), random(shades), random(50, 200)) //change noise symbol size here
   );
   noises.push(
-    new Noise(random(width), random(height), random(shades), random(50, 200))
+    new Noise(random(width), random(height), random(shades), random(50, 200)) //change noise symbol size here
   );
 
   /* CONTROLS */
@@ -210,7 +210,7 @@ function setup() {
   // Add random symbols as noise.
   addNoise.mousePressed(function () {
     noises.push(
-      new Noise(random(width), random(height), random(shades), random(50, 200))
+      new Noise(random(width), random(height), random(shades), random(50, 200)) //change noise symbol size here
     );
   });
 
@@ -452,7 +452,7 @@ function draw() {
 
   video.loadPixels();
 
-  if (frameCount == 2) {
+  if (frameCount == 2) { //this is to avoid a flow calculation error on start
     for (let y = 0; y < video.height; y += gridSize) {
       for (let x = 0; x < video.width; x += gridSize) {
         let index = (y * video.width + x) * 4;
@@ -461,7 +461,7 @@ function draw() {
 
         let nr = int(map(r, 0, 255, 0, 5));
 
-        if (random([true, false])) {
+
           pixels.push(
             new Pixel(
               x + gridSize / 2 + random(-5, 5),
@@ -471,17 +471,7 @@ function draw() {
               r
             )
           );
-        } else {
-          pixels.push(
-            new Pixel(
-              x + gridSize / 2 + random(-2, 2),
-              y + gridSize / 2 + random(-1 * (gridSize * 2), gridSize * 2),
-              shades[nr],
-              sr,
-              r
-            )
-          );
-        }
+    
       }
     }
   } else if (frameCount > 2) {
@@ -533,6 +523,7 @@ function draw() {
     previousPixels = copyImage(video.pixels, previousPixels);
   }
 }
+
 function updateSize() {
   video.loadPixels();
   pixels = [];
@@ -572,52 +563,54 @@ function updateSize() {
     }
   }
 }
-
+/* *************** */
 /* PIXEL OR SYMBOL */
+/* *************** */
 class Pixel {
-  constructor(x, y, c, r, color) {
+  constructor(x, y, symbolType, r, color) {
     this.x = x;
     this.y = y;
-    this.c = c;
+    this.symbolType = symbolType;
     this.r = r;
     this.color = color;
     this.angle = 0;
 
     // this.i = random(this.c)
-    let nc;
-    switch (c) {
+    let symbolArray; 
+
+    switch (symbolType) {
       case "arrow":
-        nc = arrow_imgs;
+        symbolArray = arrow_imgs;
         break;
       case "circle":
-        nc = circle_imgs;
+        symbolArray = circle_imgs;
         break;
       case "diagonal":
-        nc = diagonal_imgs;
+        symbolArray = diagonal_imgs;
         break;
       case "line horizontal":
-        nc = line_horizontal_imgs;
+        symbolArray = line_horizontal_imgs;
         break;
       case "line vertical":
-        nc = line_vertical_imgs;
+        symbolArray = line_vertical_imgs;
         break;
       case "star":
-        nc = star_imgs;
+        symbolArray = star_imgs;
         break;
       case "none":
-        nc = none_imgs;
+        symbolArray = none_imgs;
         break;
     }
-    this.cmap = int(map(this.color, 200, 255, 0, nc.length - 1));
-    if (random[(true, true)]) {
-      this.cmap = int(random(nc.length - 1));
+    this.cmap = int(map(this.color, 200, 255, 0, symbolArray.length - 1)); //cmap is color map - map based on color, So that similar shades get similar symbols within the symbol type array
+    if (random[(true, true)]) { //and then randomly don't do color map for 'noise'
+      this.cmap = int(random(symbolArray.length - 1));
     }
-    this.i = nc[this.cmap];
+    this.i = symbolArray[this.cmap]; //storing the particular symbol image (so it doesn't change every frame)
 
     this.changed = false;
   }
   draw() {
-    switch (this.c) {
+    switch (this.symbolType) {
       case "arrow":
         this.r = sliderSymbolSize0.value();
         break;
@@ -647,84 +640,86 @@ class Pixel {
     }
     pop();
   }
-  update(c, color) {
-    if (c != this.c) {
+  update(symbolType, color) {
+    if (symbolType != this.symbolType) {
       // this.i = random(this.c)
-      this.c = c;
-      let nc;
+      this.symbolType = symbolType;
+      let symbolArray;
 
-      switch (c) {
+      switch (symbolType) {
         case "arrow":
-          nc = arrow_imgs;
+          symbolArray = arrow_imgs;
           this.r = sliderSymbolSize0.value();
           break;
         case "circle":
-          nc = circle_imgs;
+          symbolArray = circle_imgs;
           this.r = sliderSymbolSize1.value();
           break;
         case "diagonal":
-          nc = diagonal_imgs;
+          symbolArray = diagonal_imgs;
           this.r = sliderSymbolSize2.value();
           break;
         case "line horizontal":
-          nc = line_horizontal_imgs;
+          symbolArray = line_horizontal_imgs;
           this.r = sliderSymbolSize3.value();
           break;
         case "line vertical":
-          nc = line_vertical_imgs;
+          symbolArray = line_vertical_imgs;
           this.r = sliderSymbolSize4.value();
           break;
         case "star":
-          nc = star_imgs;
+          symbolArray = star_imgs;
           this.r = sliderSymbolSize5.value();
           break;
         case "none":
-          nc = none_imgs;
+          symbolArray = none_imgs;
           break;
       }
       this.color = color;
 
-      this.cmap = int(random(nc.length - 1));
+      this.cmap = int(random(symbolArray.length - 1));
 
-      this.i = nc[this.cmap];
+      this.i = symbolArray[this.cmap]; //storing the particular symbol image (so it doesn't change every frame)
     }
   }
 }
+/* ****************************** */
 /* RANDOM SYMBOLS ADDED FOR NOISE */
+/* ****************************** */
 class Noise {
-  constructor(x, y, c, r) {
+  constructor(x, y, symbolType, r) {
     this.x = x;
     this.y = y;
-    this.c = c;
+    this.symbolType = symbolType;
     this.r = r;
 
     // this.i = random(this.c)
-    let nc;
-    switch (c) {
+    let symbolArray;
+    switch (symbolType) {
       case "arrow":
-        nc = arrow_imgs;
+        symbolArray = arrow_imgs;
         break;
       case "circle":
-        nc = circle_imgs;
+        symbolArray = circle_imgs;
         break;
       case "diagonal":
-        nc = diagonal_imgs;
+        symbolArray = diagonal_imgs;
         break;
       case "line horizontal":
-        nc = line_horizontal_imgs;
+        symbolArray = line_horizontal_imgs;
         break;
       case "line vertical":
-        nc = line_vertical_imgs;
+        symbolArray = line_vertical_imgs;
         break;
       case "star":
-        nc = star_imgs;
+        symbolArray = star_imgs;
         break;
       case "none":
-        nc = none_imgs;
+        symbolArray = none_imgs;
         break;
     }
 
-    this.i = nc[int(random(nc.length - 1))];
+    this.i = symbolArray[int(random(symbolArray.length - 1))]; //storing the particular symbol image (so it doesn't change every frame)
   }
   draw() {
     if (random([true, true, false])) {
