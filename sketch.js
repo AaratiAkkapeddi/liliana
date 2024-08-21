@@ -136,6 +136,9 @@ let line_vertical_imgs = [];
 let star_imgs = [];
 let diagonal_imgs = [];
 let none_imgs = [];
+/************/
+/* PRELOAD  */
+/************/
 function preload() {
   for (let i = 0; i < arrow.length; i++) {
     arrow_imgs.push(loadImage(arrow[i]));
@@ -172,6 +175,9 @@ let shades = [
 ];
 let pixels = [];
 let indexes = [];
+/**********/
+/* SETUP  */
+/**********/
 function setup() {
   createCanvas(800, 450);
   video = createVideo("trimmed.mp4"); //to change the video you replace the filename here
@@ -201,7 +207,7 @@ function setup() {
   let addNoise = createButton("add noise");
   addNoise.position(window.innerWidth - 100, 100);
 
-  // Call repaint() when the button is pressed.
+  // Add random symbols as noise.
   addNoise.mousePressed(function () {
     noises.push(
       new Noise(random(width), random(height), random(shades), random(50, 200))
@@ -211,13 +217,14 @@ function setup() {
   let removeNoise = createButton("remove noise");
   removeNoise.position(window.innerWidth - 200, 100);
 
-  // Call repaint() when the button is pressed.
+  // Remove random symbols as noise.
   removeNoise.mousePressed(function () {
     if (noises.length > 0) {
       noises.pop();
     }
   });
 
+  /* select symbol type for darkest shade */
   shade0 = createSelect();
   shade0.position(10, 100);
   let span2 = createSpan("Shade 0 (darkest)");
@@ -233,9 +240,11 @@ function setup() {
     );
   });
 
+
   shade1 = createSelect();
   shade1.position(10, 180);
 
+    /* select symbol type for second darkest shade */
   let span3 = createSpan("Shade 1");
   span3.position(10, 150);
   sliderSymbolSize1 = createSlider(5, 100, 20, 1);
@@ -250,9 +259,12 @@ function setup() {
     );
   });
 
+
+
   shade2 = createSelect();
   shade2.position(10, 250);
 
+   /* select symbol type for third darkest shade */
   let span4 = createSpan("Shade 2");
   span4.position(10, 230);
 
@@ -270,9 +282,12 @@ function setup() {
     );
   });
 
+
+
   shade3 = createSelect();
   shade3.position(10, 330);
 
+  /* select symbol type for third lightest shade */
   let span5 = createSpan("Shade 3");
   span5.position(10, 300);
 
@@ -291,6 +306,7 @@ function setup() {
   shade4 = createSelect();
   shade4.position(10, 400);
 
+  /* select symbol type for second lightest shade */
   let span6 = createSpan("Shade 4");
   span6.position(10, 380);
 
@@ -308,6 +324,8 @@ function setup() {
 
   shade5 = createSelect();
   shade5.position(10, 470);
+
+    /* select symbol type for lightest shade */
   let span7 = createSpan("Shade 5 (lightest)");
   span7.position(10, 440);
   sliderSymbolSize5 = createSlider(5, 100, 20, 1);
@@ -322,6 +340,8 @@ function setup() {
     );
   });
 
+
+    /* select resolution */
   let span8;
   sliderResolution = createSlider(5, 30, 10, 1);
   sliderResolution.position(10, 10);
@@ -330,7 +350,7 @@ function setup() {
   span8.position(10, 40);
   sliderResolution.input(updateSize);
 
-  // Add color options.
+  // Add symbol options.
   shade0.option("arrow");
   shade0.option("circle");
   shade0.option("line horizontal");
@@ -339,10 +359,10 @@ function setup() {
   shade0.option("star");
   shade0.option("none");
 
-  // Set the selected option to "red".
+  // Set the selected option to "symbol".
   shade0.selected("none");
 
-  // Add color options.
+  // Add sybol options.
   shade1.option("arrow");
   shade1.option("circle");
   shade1.option("line horizontal");
@@ -351,10 +371,10 @@ function setup() {
   shade1.option("star");
   shade1.option("none");
 
-  // Set the selected option to "red".
+  // Set the selected option to "circle".
   shade1.selected("circle");
 
-  // Add color options.
+  // Add symbol options.
   shade2.option("arrow");
   shade2.option("circle");
   shade2.option("line horizontal");
@@ -363,10 +383,10 @@ function setup() {
   shade2.option("star");
   shade2.option("none");
 
-  // Set the selected option to "red".
+  // Set the selected option to "diagonal".
   shade2.selected("diagonal");
 
-  // Add color options.
+  // Add symbol options.
   shade3.option("arrow");
   shade3.option("circle");
   shade3.option("line horizontal");
@@ -375,10 +395,10 @@ function setup() {
   shade3.option("star");
   shade3.option("none");
 
-  // Set the selected option to "red".
+  // Set the selected option to "line horizontal".
   shade3.selected("line horizontal");
 
-  // Add color options.
+  // Add symbol options.
   shade4.option("arrow");
   shade4.option("circle");
   shade4.option("line horizontal");
@@ -387,7 +407,7 @@ function setup() {
   shade4.option("star");
   shade4.option("none");
 
-  // Set the selected option to "red".
+  // Set the selected option to "line vertical".
   shade4.selected("line vertical");
 
   sliderFR = createSlider(5, 30, 10, 1);
@@ -402,7 +422,7 @@ function setup() {
     frameRate(sliderFR.value());
   });
 
-  // Add color options.
+  // Add symbol options.
   shade5.option("arrow");
   shade5.option("circle");
   shade5.option("line horizontal");
@@ -411,9 +431,13 @@ function setup() {
   shade5.option("star");
   shade5.option("none");
 
-  // Set the selected option to "red".
+  // Set the selected option to "star".
   shade5.selected("star");
 }
+
+/**********/
+/** DRAW **/
+/**********/
 function draw() {
   gridSize = sliderResolution.value();
   background(255);
@@ -495,15 +519,12 @@ function draw() {
             pixel.angle = zone.angle;
           }
         });
-        // Otherwise, draw a little arrow!
+        // Otherwise, rotate symbols towards direction of flow!
         push();
         translate(zone.pos.x, zone.pos.y);
         rotate(zone.angle);
         strokeWeight(20);
         stroke(0, 255, 0);
-        // line(0,0, zone.mag,0);
-        // line(zone.mag,0, zone.mag-5,-5);
-        // line(zone.mag,0, zone.mag-5,5);
         pop();
       }
     }
@@ -551,6 +572,8 @@ function updateSize() {
     }
   }
 }
+
+/* PIXEL OR SYMBOL */
 class Pixel {
   constructor(x, y, c, r, color) {
     this.x = x;
@@ -667,6 +690,7 @@ class Pixel {
     }
   }
 }
+/* RANDOM SYMBOLS ADDED FOR NOISE */
 class Noise {
   constructor(x, y, c, r) {
     this.x = x;
