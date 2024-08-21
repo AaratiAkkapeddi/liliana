@@ -411,7 +411,7 @@ function setup() {
   shade4.selected("line vertical");
 
   sliderFR = createSlider(5, 30, 10, 1);
-  sliderFR.position(10, 650);
+  sliderFR.position(10, 577);
   sliderFR.size(200);
   sliderFR.input(updateSize);
 
