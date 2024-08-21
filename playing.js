@@ -1,4 +1,3 @@
-
 //This code borrows from two p5.js examples:
 //1. A simple 'pixel' camera: https://editor.p5js.org/icm4.0/sketches/TI4Qf6W5W
 //2. Optical Flow: https://editor.p5js.org/jeffThompson/sketches/DfsmBZ9O0
