@@ -31,7 +31,7 @@ let shade3;
 let shade4;
 let shade5;
 let noises = []; //random symbols floating on top of everything to add 'noise'
-
+let imageResolutionLabel;
 /*************************/
 /*************************/
 /*************************/
@@ -227,55 +227,55 @@ function setup() {
   /* select symbol type for darkest shade */
   shade0 = createSelect();
   shade0.position(10, 100);
-  let span2 = createSpan("Shade 0 (darkest)");
-  span2.position(10, 80);
+  let shade0Label = createSpan("Shade 0 (darkest)");
+  shade0Label.position(10, 80);
   sliderSymbolSize0 = createSlider(5, 100, 28, 1);
   sliderSymbolSize0.position(window.innerWidth - 270, 200);
   sliderSymbolSize0.size(200);
-  let span = createSpan("symbol size for Arrow (currently 28)");
-  span.position(window.innerWidth - 270, 230);
+  let arrowSizeLabel = createSpan("symbol size for Arrow (currently 28)");
+  arrowSizeLabel.position(window.innerWidth - 270, 230);
   sliderSymbolSize0.input(function () {
-    span.html(
+    arrowSizeLabel.html(
       "symbol size for Arrow (currently " + sliderSymbolSize0.value() + ")"
     );
   });
 
-
+    /* select symbol type for second darkest shade */
   shade1 = createSelect();
   shade1.position(10, 180);
 
-    /* select symbol type for second darkest shade */
-  let span3 = createSpan("Shade 1");
-  span3.position(10, 150);
+
+  let shade1Label = createSpan("Shade 1");
+  shade1Label.position(10, 150);
   sliderSymbolSize1 = createSlider(5, 100, 20, 1);
   sliderSymbolSize1.position(window.innerWidth - 270, 280);
   sliderSymbolSize1.size(200);
 
-  let span9 = createSpan("symbol size for circle (currently 20)");
-  span9.position(window.innerWidth - 270, 300);
+  let circleSizeLabel = createSpan("symbol size for circle (currently 20)");
+  circleSizeLabel.position(window.innerWidth - 270, 300);
   sliderSymbolSize1.input(function () {
-    span9.html(
+    circleSizeLabel.html(
       "symbol size for circle (currently " + sliderSymbolSize1.value() + ")"
     );
   });
 
-
+   /* select symbol type for third darkest shade */
 
   shade2 = createSelect();
   shade2.position(10, 250);
 
-   /* select symbol type for third darkest shade */
-  let span4 = createSpan("Shade 2");
-  span4.position(10, 230);
+
+  let shade2Label = createSpan("Shade 2");
+  shade2Label.position(10, 230);
 
   sliderSymbolSize2 = createSlider(5, 100, 100, 1);
   sliderSymbolSize2.position(window.innerWidth - 270, 350);
   sliderSymbolSize2.size(200);
 
-  let span10 = createSpan("symbol size for Diagonal (currently 100)");
-  span10.position(window.innerWidth - 270, 370);
+  let diagonalSizeLabel = createSpan("symbol size for Diagonal (currently 100)");
+  diagonalSizeLabel.position(window.innerWidth - 270, 370);
   sliderSymbolSize2.input(function () {
-    span10.html(
+    diagonalSizeLabel.html(
       "symbol size for shade Diagonal (currently " +
       sliderSymbolSize2.value() +
       ")"
@@ -283,71 +283,71 @@ function setup() {
   });
 
 
-
+  /* select symbol type for third lightest shade */
   shade3 = createSelect();
   shade3.position(10, 330);
 
-  /* select symbol type for third lightest shade */
-  let span5 = createSpan("Shade 3");
-  span5.position(10, 300);
+
+  let shade3Label = createSpan("Shade 3");
+  shade3Label.position(10, 300);
 
   sliderSymbolSize3 = createSlider(5, 100, 20, 1);
   sliderSymbolSize3.position(window.innerWidth - 270, 420);
   sliderSymbolSize3.size(200);
 
-  let span11 = createSpan("symbol size for Horizontal (currently 20)");
-  span11.position(window.innerWidth - 270, 450);
+  let horizontalSizeLabel = createSpan("symbol size for Horizontal (currently 20)");
+  horizontalSizeLabel.position(window.innerWidth - 270, 450);
   sliderSymbolSize3.input(function () {
-    span11.html(
+    horizontalSizeLabel.html(
       "symbol size for Horizontal (currently " + sliderSymbolSize3.value() + ")"
     );
   });
 
+  /* select symbol type for second lightest shade */
   shade4 = createSelect();
   shade4.position(10, 400);
 
-  /* select symbol type for second lightest shade */
-  let span6 = createSpan("Shade 4");
-  span6.position(10, 380);
+
+  let shade4Label = createSpan("Shade 4");
+  shade4Label.position(10, 380);
 
   sliderSymbolSize4 = createSlider(5, 100, 20, 1);
   sliderSymbolSize4.position(window.innerWidth - 270, 480);
   sliderSymbolSize4.size(200);
 
-  let span12 = createSpan("symbol size for Vertical (currently 20)");
-  span12.position(window.innerWidth - 270, 500);
+  let verticalSizeLabel = createSpan("symbol size for Vertical (currently 20)");
+  verticalSizeLabel.position(window.innerWidth - 270, 500);
   sliderSymbolSize4.input(function () {
-    span12.html(
+    verticalSizeLabel.html(
       "symbol size for Vertical (currently " + sliderSymbolSize4.value() + ")"
     );
   });
 
+  /* select symbol type for lightest shade */
   shade5 = createSelect();
   shade5.position(10, 470);
 
-    /* select symbol type for lightest shade */
-  let span7 = createSpan("Shade 5 (lightest)");
-  span7.position(10, 440);
+  let shade5Label = createSpan("Shade 5 (lightest)");
+  shade5Label.position(10, 440);
   sliderSymbolSize5 = createSlider(5, 100, 20, 1);
   sliderSymbolSize5.position(window.innerWidth - 270, 530);
   sliderSymbolSize5.size(200);
 
-  let span13 = createSpan("symbol size for Star (currently 20)");
-  span13.position(window.innerWidth - 270, 550);
+  let starSizeLabel = createSpan("symbol size for Star (currently 20)");
+  starSizeLabel.position(window.innerWidth - 270, 550);
   sliderSymbolSize5.input(function () {
-    span13.html(
+    starSizeLabel.html(
       "symbol size for Star (currently " + sliderSymbolSize5.value() + ")"
     );
   });
 
 
-    /* select resolution */
-  let span8;
+  /* select resolution */
   sliderResolution = createSlider(5, 30, 10, 1);
   sliderResolution.position(10, 10);
   sliderResolution.size(200);
-  span8 = createSpan("image resolution");
-  span8.position(10, 40);
+  imageResolutionLabel = createSpan("image resolution");
+  imageResolutionLabel.position(10, 40);
   sliderResolution.input(updateSize);
 
   // Add symbol options.
@@ -538,7 +538,7 @@ function updateSize() {
   pixels = [];
   indexes = [];
   gridSize = sliderResolution.value();
-  span8.html("image resolution (currently " + sliderResolution.value() + ")");
+  imageResolutionLabel.html("image resolution (currently " + sliderResolution.value() + ")");
 
   for (let y = 0; y < video.height; y += gridSize) {
     for (let x = 0; x < video.width; x += gridSize) {
